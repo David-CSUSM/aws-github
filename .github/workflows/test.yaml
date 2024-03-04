@@ -26,3 +26,7 @@ jobs:
 
     - name: run tests
       run: python manage.py test
+      env:
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        DEBUG: ${{ secrets.DEBUG }}
+        ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}

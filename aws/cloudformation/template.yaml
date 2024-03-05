@@ -67,6 +67,7 @@ Resources:
             Action:
               - "sts:AssumeRole"
       ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforAWSCodeDeploy'
         - 'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore'
       Policies:
         - PolicyName: "allow-webserver-deployment-bucket-policy"
@@ -169,6 +170,8 @@ Resources:
                 - "codedeploy.amazonaws.com"
             Action:
               - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
 
 Outputs:
 

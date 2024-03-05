@@ -1,15 +1,18 @@
-name: test
+name: test and deploy
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch: {}
+
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
 
 jobs:
+
   test:
     runs-on: ubuntu-latest
-
     steps:
     - name: checkout code
       uses: actions/checkout@v4
@@ -30,3 +33,20 @@ jobs:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         DEBUG: ${{ secrets.DEBUG }}
         ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+  
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v4
+    - uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ secrets.IAMROLE_GITHUB }}
+        role-session-name: GitHub-Action-Role
+        aws-region: ${{ secrets.AWS_REGION }}
+    - run: |
+        echo "Deploying branch ${{ env.GITHUB_REF }} to ${{ github.event.inputs.environment }}"
+        commit_hash=`git rev-parse HEAD`
+        aws deploy create-deployment --application-name CodeDeployAppName --deployment-group-name CodeDeployGroupName --github-location repository=$GITHUB_REPOSITORY,commitId=$commit_hash --ignore-application-stop-failures

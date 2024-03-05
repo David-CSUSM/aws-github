@@ -25,6 +25,21 @@ Resources:
         - Ref: WebServerSecurityGroup
       IamInstanceProfile:
         Ref: WebServerInstanceProfile
+      UserData:
+        Fn::Base64:
+          !Sub |
+            #!/bin/bash -xe
+
+            # yum install -y aws-cfn-bootstrap
+
+            # /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource WebServerInstance --configsets install --region ${AWS::Region}
+            
+            # /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
+
+            yum install ruby -y
+            wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
+            chmod +x ./install
+            ./install auto
       Tags:
         - Key: Name
           Value: ScoreSensei-WebServer

@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: /aws
-    destination: /usr/local/codedeployresources
+  - source: /
+    destination: /home/ec2-user
 hooks:
   ApplicationStop:
     - location: aws/scripts/application-stop.sh

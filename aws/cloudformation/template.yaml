@@ -85,15 +85,6 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforAWSCodeDeploy'
         - 'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore'
-      Policies:
-        - PolicyName: "allow-webserver-deployment-bucket-policy"
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: "Allow"
-                Action:
-                - "s3:getObject"
-                Resource: !Sub arn:${AWS::Partition}:s3:::${WebServerDeploymentBucket}/*
 
 # Set up GitHub
 
@@ -127,10 +118,6 @@ Resources:
               - 'codedeploy:List*'
               Resource:
                 - !Sub 'arn:${AWS::Partition}:codedeploy:*:${AWS::AccountId}:*'
-            - Effect: Allow
-              Action:
-              - 's3:putObject'
-              Resource: !Sub arn:${AWS::Partition}:s3:::${WebServerDeploymentBucket}/*
 
   IDCProvider:
     Type: AWS::IAM::OIDCProvider
@@ -140,19 +127,6 @@ Resources:
         - "sts.amazonaws.com"
       ThumbprintList:
         - !Ref ThumbprintList
-
-  WebServerDeploymentBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketEncryption:
-        ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: AES256
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
 
 # Set up CodeDeploy
 
@@ -174,7 +148,6 @@ Resources:
               - Type: KEY_AND_VALUE
                 Key: Name
                 Value: ScoreSensei-WebServer
-
 
   WebServerApplication:
     Type: AWS::CodeDeploy::Application
@@ -201,18 +174,6 @@ Outputs:
   PublicIP:
     Description: EC2 public IP
     Value: !GetAtt WebServerInstance.PublicIp
-  
-  DeploymentGroup:
-    Description: Webapp Deployment Group
-    Value: !Ref WebServerDeploymentGroup
-  
-  DeploymentBucket:
-    Description: Deployment bucket
-    Value: !Ref WebServerDeploymentBucket
-  
-  ApplicationName:
-    Description: CodeDeploy Application name
-    Value: !Ref WebServerApplication
   
   GithubIAMRoleArn:
     Description: IAM role for GitHub

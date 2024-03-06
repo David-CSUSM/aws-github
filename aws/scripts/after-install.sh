@@ -8,7 +8,7 @@ DEBUG=`echo $DEBUG | sed -e 's/^"//' -e 's/"$//'`
 ALLOWED_HOSTS=$(aws ssm get-parameters --region us-east-1 --names ALLOWED_HOSTS --with-decryption --query Parameters[0].Value)
 ALLOWED_HOSTS=`echo $ALLOWED_HOSTS | sed -e 's/^"//' -e 's/"$//'`
 
-cat > .env <<EOL
+cat > /home/ec2-user/app/.env <<EOL
 SECRET_KEY=${SECRET_KEY}
 DEBUG=${DEBUG}
 ALLOWED_HOSTS=${ALLOWED_HOSTS}

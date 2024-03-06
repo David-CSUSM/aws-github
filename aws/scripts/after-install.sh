@@ -68,13 +68,14 @@ EOF
 
 # Install dependencies
 # --------------------------------------------------------------------------------
+yum install -y python3.11
 
-python3 -m ensurepip --upgrade
+python3.11 -m ensurepip --upgrade
 
-pip install --upgrade pip
+python3.11 -m pip install --upgrade pip
 
-python3 -m venv .venv
+python3.11 -m venv .venv
 
 source .venv/bin/activate
 
-pip install -r requirements.txt
+python3.11 -m pip install -r requirements.txt

@@ -1,1 +1,1 @@
-echo "before install"
+yum update -y

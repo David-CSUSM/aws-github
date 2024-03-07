@@ -58,14 +58,14 @@ EOF
 
 yum install -y nginx
 
-cat > /etc/nginx/sites-available/myproject<<EOF
+cat > /etc/nginx/sites-available/project.conf<<EOF
 server {
     listen 80;
     server_name 54.91.91.205;
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
-        root /home/ec2-users/project;
+        root /home/ec2-users/project/static;
     }
 
     location / {
@@ -76,7 +76,7 @@ server {
 
 EOF
 
-ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
+ln -s /etc/nginx/sites-available/project.conf /etc/nginx/sites-enabled
 
 nginx -t
 

@@ -60,6 +60,8 @@ mkdir /etc/nginx/sites-available
 
 SERVER_IP = $(curl https://checkip.amazonaws.com)
 
+echo ${SERVER_IP}
+
 cat > /etc/nginx/sites-available/project.conf<<EOF
 server {
     listen 80;

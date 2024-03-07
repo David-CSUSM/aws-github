@@ -9,6 +9,8 @@ source .venv/bin/activate
 
 python3.11 -m pip install -r requirements.txt
 
+python3.11 manage.py collectstatic
+
 
 # Install Gunicorn
 # --------------------------------------------------------------------------------
@@ -59,7 +61,7 @@ yum install -y nginx
 cat > /etc/nginx/sites-available/myproject<<EOF
 server {
     listen 80;
-    server_name server_domain_or_IP;
+    server_name 54.91.91.205;
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {

@@ -1,6 +1,7 @@
 # Set working directory of project
 cd /home/ec2-user/project
 
+
 # Install dependencies
 # --------------------------------------------------------------------------------
 python3.11 -m venv .venv
@@ -26,8 +27,6 @@ ListenStream=/run/gunicorn.sock
 WantedBy=sockets.target
 
 EOF
-
-# /.local/bin/gunicorn
 
 cat > /etc/systemd/system/gunicorn.service <<EOF
 [Unit]
@@ -60,9 +59,7 @@ mkdir /etc/nginx/sites-available
 
 SERVER_IP=$(curl https://checkip.amazonaws.com)
 
-echo $SERVER_IP
-
-cat > /etc/nginx/sites-available/project.conf<<EOF
+cat > /etc/nginx/sites-available/project.conf <<EOF
 server {
     listen 80;
     server_name ${SERVER_IP};
@@ -81,8 +78,6 @@ server {
 EOF
 
 ln -s /etc/nginx/sites-available/project.conf /etc/nginx/sites-enabled
-
-nginx -t
 
 
 # Configure environment variables

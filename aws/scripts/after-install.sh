@@ -1,16 +1,3 @@
-# Set working directory of project
-cd /home/ec2-user/project
-
-
-# Install dependencies
-# --------------------------------------------------------------------------------
-python3.11 -m venv .venv
-
-source .venv/bin/activate
-
-python3.11 -m pip install -r requirements.txt
-
-
 # Configure environment variables
 # --------------------------------------------------------------------------------
 # The values are stored in AWS Parameter Store
@@ -21,12 +8,22 @@ SECRET_KEY=`echo $SECRET_KEY | sed -e 's/^"//' -e 's/"$//'`
 
 SERVER_IP=$(curl https://checkip.amazonaws.com)
 
-cat > .env <<EOF
+cat > /home/ec2-user/project/.env <<EOF
 SECRET_KEY=${SECRET_KEY}
 DEBUG=False
 ALLOWED_HOSTS=${SERVER_IP}
 
 EOF
+
+
+# Install dependencies
+# --------------------------------------------------------------------------------
+
+python3.11 -m venv .venv
+
+source .venv/bin/activate
+
+python3.11 -m pip install -r requirements.txt
 
 
 # Install Gunicorn

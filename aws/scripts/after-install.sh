@@ -73,9 +73,7 @@ EOF
 
 yum install -y nginx
 
-mkdir /etc/nginx/sites-available
-
-cat > /etc/nginx/sites-available/project.conf <<EOF
+cat > /etc/nginx/conf.d/project.conf <<EOF
 server {
     listen 80;
     server_name ${SERVER_IP};

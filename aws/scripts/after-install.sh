@@ -19,9 +19,9 @@ EOF
 # Install dependencies
 # --------------------------------------------------------------------------------
 
-python3.11 -m venv .venv
+python3.11 -m venv /home/ec2-user/project/.venv
 
-source .venv/bin/activate
+source /home/ec2-user/project/.venv/bin/activate
 
 python3.11 -m pip install -r requirements.txt
 

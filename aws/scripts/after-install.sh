@@ -11,6 +11,24 @@ source .venv/bin/activate
 python3.11 -m pip install -r requirements.txt
 
 
+# Configure environment variables
+# --------------------------------------------------------------------------------
+# The values are stored in AWS Parameter Store
+# 'sed' removes double quotes from the environment variables
+
+SECRET_KEY=$(aws ssm get-parameters --region us-east-1 --names SECRET_KEY --with-decryption --query Parameters[0].Value)
+SECRET_KEY=`echo $SECRET_KEY | sed -e 's/^"//' -e 's/"$//'`
+
+SERVER_IP=$(curl https://checkip.amazonaws.com)
+
+cat > .env <<EOF
+SECRET_KEY=${SECRET_KEY}
+DEBUG=True
+ALLOWED_HOSTS=${SERVER_IP}
+
+EOF
+
+
 # Install Gunicorn
 # --------------------------------------------------------------------------------
 
@@ -36,7 +54,7 @@ After=network.target
 
 [Service]
 User=ec2-user
-Group=www-data
+Group=www
 WorkingDirectory=/home/ec2-user/project
 ExecStart=/home/ec2-user/project/.venv/bin/gunicorn \
           --access-logfile - \
@@ -57,8 +75,6 @@ yum install -y nginx
 
 mkdir /etc/nginx/sites-available
 
-SERVER_IP=$(curl https://checkip.amazonaws.com)
-
 cat > /etc/nginx/sites-available/project.conf <<EOF
 server {
     listen 80;
@@ -78,19 +94,3 @@ server {
 EOF
 
 ln -s /etc/nginx/sites-available/project.conf /etc/nginx/sites-enabled
-
-
-# Configure environment variables
-# --------------------------------------------------------------------------------
-# The values are stored in AWS Parameter Store
-# 'sed' removes double quotes from the environment variables
-
-SECRET_KEY=$(aws ssm get-parameters --region us-east-1 --names SECRET_KEY --with-decryption --query Parameters[0].Value)
-SECRET_KEY=`echo $SECRET_KEY | sed -e 's/^"//' -e 's/"$//'`
-
-cat > .env <<EOF
-SECRET_KEY=${SECRET_KEY}
-DEBUG=True
-ALLOWED_HOSTS=127.0.0.1, ${SERVER_IP}
-
-EOF

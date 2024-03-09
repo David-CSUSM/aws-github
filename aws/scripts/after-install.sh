@@ -91,4 +91,4 @@ server {
 
 EOF
 
-ln -s /etc/nginx/sites-available/project.conf /etc/nginx/sites-enabled
+# ln -s /etc/nginx/sites-available/project.conf /etc/nginx/sites-enabled

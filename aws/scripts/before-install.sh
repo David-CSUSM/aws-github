@@ -13,6 +13,6 @@ python3.11 -m pip install --upgrade pip
 
 # Create Group
 # --------------------------------------------------------------------------------
-groupadd www-data
+groupadd www
 
-usermod -a -G www-data ec2-user
+usermod -a -G www ec2-user

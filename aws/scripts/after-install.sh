@@ -51,7 +51,7 @@ After=network.target
 
 [Service]
 User=ec2-user
-Group=www-data
+Group=www
 WorkingDirectory=/home/ec2-user/project
 ExecStart=/home/ec2-user/project/.venv/bin/gunicorn \
           --access-logfile - \

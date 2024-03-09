@@ -1,4 +1,4 @@
-systemctl start gunicorn.socket
-systemctl enable gunicorn.socket
+systemctl daemon-reload
+systemctl restart gunicorn
 
 systemctl restart nginx

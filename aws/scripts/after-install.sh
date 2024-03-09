@@ -67,6 +67,9 @@ WantedBy=multi-user.target
 
 EOF
 
+systemctl start gunicorn.socket
+systemctl enable gunicorn.socket
+
 
 # Install Nginx
 # --------------------------------------------------------------------------------

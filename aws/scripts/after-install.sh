@@ -23,7 +23,7 @@ SERVER_IP=$(curl https://checkip.amazonaws.com)
 
 cat > .env <<EOF
 SECRET_KEY=${SECRET_KEY}
-DEBUG=True
+DEBUG=False
 ALLOWED_HOSTS=${SERVER_IP}
 
 EOF
@@ -54,7 +54,7 @@ After=network.target
 
 [Service]
 User=ec2-user
-Group=www
+Group=www-data
 WorkingDirectory=/home/ec2-user/project
 ExecStart=/home/ec2-user/project/.venv/bin/gunicorn \
           --access-logfile - \
@@ -79,16 +79,14 @@ server {
     server_name ${SERVER_IP};
 
     location = /favicon.ico { access_log off; log_not_found off; }
-    location /static/ {
-        root /home/ec2-users/project/static;
-    }
 
     location / {
-        include proxy_params;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
         proxy_pass http://unix:/run/gunicorn.sock;
     }
 }
 
 EOF
-
-# ln -s /etc/nginx/sites-available/project.conf /etc/nginx/sites-enabled

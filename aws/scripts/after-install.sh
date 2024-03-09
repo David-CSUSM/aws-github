@@ -26,7 +26,7 @@ python3.11 -m venv /home/ec2-user/project/.venv
 
 source /home/ec2-user/project/.venv/bin/activate
 
-python3.11 -m pip install -r requirements.txt
+python3.11 -m pip install -r /home/ec2-user/project/requirements.txt
 
 
 # Install Gunicorn

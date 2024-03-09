@@ -9,3 +9,10 @@ yum install -y python3.11
 python3.11 -m ensurepip --upgrade
 
 python3.11 -m pip install --upgrade pip
+
+
+# Create Group
+# --------------------------------------------------------------------------------
+groupadd www
+
+usermod -a -G www ec2-user

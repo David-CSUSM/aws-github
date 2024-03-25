@@ -2,13 +2,12 @@ name: test and deploy
 
 on:
   workflow_dispatch: {}
-  # push:
-  #   branches: [main]
-  # pull_request:
-  #   branches: [main]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-
   test:
     runs-on: ubuntu-latest
     steps:
@@ -29,8 +28,7 @@ jobs:
       run: python manage.py test
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        DEBUG: ${{ secrets.DEBUG }}
-        ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+        DEBUG: True
   
   deploy:
     runs-on: ubuntu-latest
@@ -43,7 +41,7 @@ jobs:
       with:
         role-to-assume: ${{ secrets.IAMROLE_GITHUB }}
         role-session-name: GitHub-Action-Role
-        aws-region: ${{ secrets.AWS_REGION }}
+        aws-region: us-east-1a
     - run: |
         echo "Deploying branch ${{ env.GITHUB_REF }} to ${{ github.event.inputs.environment }}"
         commit_hash=`git rev-parse HEAD`

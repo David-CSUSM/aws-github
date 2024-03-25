@@ -6,14 +6,10 @@
 SECRET_KEY=$(aws ssm get-parameters --region us-east-1 --names SECRET_KEY --with-decryption --query Parameters[0].Value)
 SECRET_KEY=`echo $SECRET_KEY | sed -e 's/^"//' -e 's/"$//'`
 
-DEBUG=$(aws ssm get-parameters --region us-east-1 --names DEBUG --with-decryption --query Parameters[0].Value)
-DEBUG=`echo $DEBUG | sed -e 's/^"//' -e 's/"$//'`
-
 SERVER_IP=$(curl https://checkip.amazonaws.com)
 
 cat > /home/ec2-user/project/.env <<EOF
 SECRET_KEY=${SECRET_KEY}
-DEBUG=${DEBUG}
 ALLOWED_HOSTS=${SERVER_IP}
 
 EOF

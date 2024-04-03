@@ -42,8 +42,6 @@ Resources:
               command: "python3.11 -m ensurepip --upgrade"
             02-upgrade-pip:
               command: "python3.11 -m pip install --upgrade pip"
-            03-install-gunicorn:
-              command: "python3.11 -m pip install gunicorn"
         config:
           commands:
             01-create-group:

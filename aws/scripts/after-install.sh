@@ -28,7 +28,7 @@ python3.11 -m pip install -r /home/ec2-user/project/requirements.txt
 # Install Gunicorn
 # --------------------------------------------------------------------------------
 
-# python3.11 -m pip install gunicorn
+python3.11 -m pip install gunicorn
 
 cat > /etc/systemd/system/gunicorn.socket <<EOF
 [Unit]
@@ -52,7 +52,7 @@ After=network.target
 User=ec2-user
 Group=www
 WorkingDirectory=/home/ec2-user/project
-ExecStart=/usr/local/bin/gunicorn \
+ExecStart=/home/ec2-user/project/.venv/bin/gunicorn \
           --access-logfile - \
           --workers 3 \
           --bind unix:/run/gunicorn.sock \

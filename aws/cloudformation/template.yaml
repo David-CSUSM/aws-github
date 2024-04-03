@@ -2,6 +2,11 @@ AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
 
+  DjangoProjectName:
+    Type: String
+    Default: ScoreSensei
+    Description: The name of the Django Project
+
   ThumbprintList:
     Type: String 
     Default: 6938fd4d98bab03faadb97b34396831e3780aea1
@@ -176,7 +181,7 @@ Resources:
   CodeDeployApplication:
     Type: AWS::CodeDeploy::Application
     Properties:
-      ApplicationName: scoresensei
+      ApplicationName: !Ref DjangoProjectName
 
   CodeDeployRole:
     Type: AWS::IAM::Role

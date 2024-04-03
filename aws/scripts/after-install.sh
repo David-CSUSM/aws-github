@@ -52,7 +52,7 @@ After=network.target
 User=ec2-user
 Group=www
 WorkingDirectory=/home/ec2-user/project
-ExecStart=/home/ec2-user/project/.venv/bin/gunicorn \
+ExecStart=/usr/local/bin/gunicorn \
           --access-logfile - \
           --workers 3 \
           --bind unix:/run/gunicorn.sock \

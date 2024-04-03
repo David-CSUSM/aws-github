@@ -16,8 +16,35 @@ Resources:
 
 # Set up EC2 Instance
 
-  EC2Instance:
+  WebServerInstance:
     Type: AWS::EC2::Instance
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT5M
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          setup:
+            - install
+            - config
+        install:
+          packages:
+            yum:
+              nginx: []
+              python3.11: []
+          commands:
+            01-install-pip:
+              command: "python3.11 -m ensurepip --upgrade"
+            02-upgrade-pip:
+              command: "python3.11 -m pip install --upgrade pip"
+            03-install-gunicorn:
+              command: "python3.11 -m pip install gunicorn"
+        config:
+          commands:
+            01-create-group:
+              command: "groupadd www"
+            02-add-group:
+              command: "usermod -a -G www ec2-user"
     Properties:
       ImageId: ami-0440d3b780d96b29d
       InstanceType: t3.micro
@@ -31,19 +58,19 @@ Resources:
           !Sub |
             #!/bin/bash -xe
 
-            # yum install -y aws-cfn-bootstrap
-
-            # /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource WebServerInstance --configsets install --region ${AWS::Region}
-            
-            # /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
-
             yum install ruby -y
             wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
             chmod +x ./install
             ./install auto
+
+            yum install -y aws-cfn-bootstrap
+
+            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource WebServerInstance --configsets setup --region ${AWS::Region}
+            
+            /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
       Tags:
         - Key: Name
-          Value: MyWebServer
+          Value: WebServerInstance
 
   EC2SecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -58,20 +85,17 @@ Resources:
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
-      Tags:
-        - Key: Name
-          Value: MySecurityGroup
 
   EC2InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Roles:
-        - Ref: EC2IAMRole
+        - Ref: EC2Role
 
-  EC2IAMRole:
+  EC2Role:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: CodeDeployRoleforEC2
+      RoleName: !Sub ${AWS::StackName}-CodeDeployRoleforEC2
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -88,17 +112,17 @@ Resources:
 
 # Set up GitHub
 
-  GitHubIAMRole:
+  GitHubRole:
     Type: AWS::IAM::Role
     Properties:
-        RoleName: CodeDeployRoleforGitHub
+        RoleName: !Sub ${AWS::StackName}-CodeDeployRoleforGitHub
         AssumeRolePolicyDocument:
             Version: "2012-10-17"
             Statement:
               - Effect: Allow
                 Action: sts:AssumeRoleWithWebIdentity
                 Principal:
-                  Federated: !Ref IDCProvider
+                  Federated: !Ref OIDCProvider
                 Condition:
                   StringLike:
                     token.actions.githubusercontent.com:sub: !Sub repo:${GithubRepoName}:*
@@ -119,7 +143,7 @@ Resources:
               Resource:
                 - !Sub 'arn:${AWS::Partition}:codedeploy:*:${AWS::AccountId}:*'
 
-  IDCProvider:
+  OIDCProvider:
     Type: AWS::IAM::OIDCProvider
     Properties:
       Url: "https://token.actions.githubusercontent.com"
@@ -130,13 +154,13 @@ Resources:
 
 # Set up CodeDeploy
 
-  CodeDeployDeploymentGroup:
+  WebServerDeploymentGroup:
     Type: AWS::CodeDeploy::DeploymentGroup
     Properties:
       ApplicationName: !Ref CodeDeployApplication
       ServiceRoleArn: !GetAtt CodeDeployRole.Arn
       DeploymentConfigName: CodeDeployDefault.OneAtATime
-      DeploymentGroupName: CodeDeployGroupName
+      DeploymentGroupName: WebServerDeployment
       AutoRollbackConfiguration:
           Enabled: true
           Events:
@@ -147,16 +171,17 @@ Resources:
           - Ec2TagGroup:
               - Type: KEY_AND_VALUE
                 Key: Name
-                Value: MyWebServer
+                Value: WebServerInstance
 
   CodeDeployApplication:
     Type: AWS::CodeDeploy::Application
     Properties:
-      ApplicationName: CodeDeployAppName
+      ApplicationName: scoresensei
 
   CodeDeployRole:
     Type: AWS::IAM::Role
     Properties:
+      RoleName: !Sub ${AWS::StackName}-CodeDeployRole
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -173,8 +198,8 @@ Outputs:
 
   PublicIP:
     Description: EC2 public IP
-    Value: !GetAtt EC2Instance.PublicIp
+    Value: !GetAtt WebServerInstance.PublicIp
   
-  GithubIAMRoleArn:
+  GithubRoleArn:
     Description: IAM role for GitHub
-    Value: !GetAtt GitHubIAMRole.Arn
+    Value: !GetAtt GitHubRole.Arn

@@ -28,7 +28,7 @@ python3.11 -m pip install -r /home/ec2-user/project/requirements.txt
 # Install Gunicorn
 # --------------------------------------------------------------------------------
 
-python3.11 -m pip install gunicorn
+# python3.11 -m pip install gunicorn
 
 cat > /etc/systemd/system/gunicorn.socket <<EOF
 [Unit]
@@ -70,7 +70,7 @@ systemctl enable gunicorn.socket
 # Install Nginx
 # --------------------------------------------------------------------------------
 
-yum install -y nginx
+# yum install -y nginx
 
 cat > /etc/nginx/conf.d/project.conf <<EOF
 server {

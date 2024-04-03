@@ -1,18 +1,18 @@
-yum update -y
+# yum update -y
 
 
-# Install Python 3.11 with pip
-# --------------------------------------------------------------------------------
+# # Install Python 3.11 with pip
+# # --------------------------------------------------------------------------------
 
-yum install -y python3.11
+# yum install -y python3.11
 
-python3.11 -m ensurepip --upgrade
+# python3.11 -m ensurepip --upgrade
 
-python3.11 -m pip install --upgrade pip
+# python3.11 -m pip install --upgrade pip
 
 
-# Create Group
-# --------------------------------------------------------------------------------
-groupadd www
+# # Create Group
+# # --------------------------------------------------------------------------------
+# groupadd www
 
-usermod -a -G www ec2-user
+# usermod -a -G www ec2-user

@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: /
+  - source: /project
     destination: /home/ec2-user/project
 hooks:
   ApplicationStop:

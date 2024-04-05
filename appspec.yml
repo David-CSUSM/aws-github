@@ -4,7 +4,7 @@ files:
   - source: /project
     destination: /home/ec2-user/project
 permissions:
-  - object: /home/project
+  - object: /home/ec2-user/project
     owner: ec2-user
     mode: 755
 hooks:

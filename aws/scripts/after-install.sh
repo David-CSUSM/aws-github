@@ -26,8 +26,7 @@ python3.11 -m pip install -r /home/ec2-user/project/requirements.txt
 
 cd /home/ec2-user/project
 
-chmod +x manage.py
-python3.11 manage.py collecstatic
+python3.11 manage.py collectstatic
 
 # Install and Configure Gunicorn
 # --------------------------------------------------------------------------------

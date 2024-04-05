@@ -3,6 +3,10 @@ os: linux
 files:
   - source: /project
     destination: /home/ec2-user/project
+permissions:
+  - object: /home/project
+    owner: ec2-user
+    mode: 755
 hooks:
   AfterInstall:
     - location: aws/scripts/after-install.sh

@@ -14,7 +14,7 @@ Parameters:
 
   GithubRepoName:
     Type: String
-    Default: David-CSUSM/aws-github
+    Default: kitchy115/CS-490-Capstone-Project
     Description: GitHub repository name as username/repository
 
 Resources:
@@ -202,7 +202,7 @@ Outputs:
   PublicIP:
     Description: EC2 public IP
     Value: !GetAtt WebServerInstance.PublicIp
-  
+
   GithubRoleArn:
     Description: IAM role for GitHub
     Value: !GetAtt GitHubRole.Arn

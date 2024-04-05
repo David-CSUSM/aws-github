@@ -1,1 +1,0 @@
-echo "application stop"

@@ -15,7 +15,7 @@ ALLOWED_HOSTS=${SERVER_IP}
 EOF
 
 
-# Install dependencies
+# Install requirements
 # --------------------------------------------------------------------------------
 
 python3.11 -m venv /home/ec2-user/project/.venv
@@ -25,7 +25,7 @@ source /home/ec2-user/project/.venv/bin/activate
 python3.11 -m pip install -r /home/ec2-user/project/requirements.txt
 
 
-# Install Gunicorn
+# Install and Configure Gunicorn
 # --------------------------------------------------------------------------------
 
 python3.11 -m pip install gunicorn
@@ -56,7 +56,7 @@ ExecStart=/home/ec2-user/project/.venv/bin/gunicorn \
           --access-logfile - \
           --workers 3 \
           --bind unix:/run/gunicorn.sock \
-          example.wsgi:application
+          scoresensei.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
@@ -67,10 +67,8 @@ systemctl start gunicorn.socket
 systemctl enable gunicorn.socket
 
 
-# Install Nginx
+# Configure Nginx
 # --------------------------------------------------------------------------------
-
-# yum install -y nginx
 
 cat > /etc/nginx/conf.d/project.conf <<EOF
 server {

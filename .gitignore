@@ -6,7 +6,7 @@ __pycache__
 db.sqlite3
 media
 
-# Backup files # 
+# Backup files #
 *.bak
 
 # IntelliJ
@@ -20,38 +20,38 @@ atlassian-ide-plugin.xml
 *.py[cod]
 *$py.class
 
-# Installer logs 
-pip-log.txt 
-pip-delete-this-directory.txt 
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Unit test / coverage reports 
-htmlcov/ 
-.tox/ 
-.coverage 
-.coverage.* 
-.cache 
-.pytest_cache/ 
-nosetests.xml 
-coverage.xml 
-*.cover 
-.hypothesis/ 
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
 
-# pyenv 
-.python-version 
+# pyenv
+.python-version
 
-# Environments 
-.env 
-.venv 
-env/ 
-venv/ 
-ENV/ 
-env.bak/ 
-venv.bak/ 
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
-# mkdocs documentation 
-/site 
+# mkdocs documentation
+/site
 
-# Visual Studio Code # 
+# Visual Studio Code #
 .vscode/
 
 ### Mac OS ###

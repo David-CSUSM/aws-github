@@ -86,7 +86,7 @@ server {
     }
 
     location /static/ {
-        root /home/ec2-user/project
+        root /home/ec2-user/project;
     }
 }
 

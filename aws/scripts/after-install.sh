@@ -84,6 +84,10 @@ server {
         proxy_set_header X-Forwarded-Proto \$scheme;
         proxy_pass http://unix:/run/gunicorn.sock;
     }
+
+    location /static/ {
+        root /home/ec2-user/project
+    }
 }
 
 EOF

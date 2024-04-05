@@ -14,7 +14,7 @@ Parameters:
 
   GithubRepoName:
     Type: String
-    Default: kitchy115/CS-490-Capstone-Project
+    Default: David-CSUSM/aws-github
     Description: GitHub repository name as username/repository
 
 Resources:

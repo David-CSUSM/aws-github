@@ -5,7 +5,8 @@ files:
     destination: /home/ec2-user/project
 permissions:
   - object: /home/ec2-user/project
-    owner: ec2-user
+    owner: nginx
+    group: nginx
     mode: 755
 hooks:
   AfterInstall:

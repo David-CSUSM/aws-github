@@ -30,8 +30,7 @@ python3.11 -m pip install -r /home/ec2-user/project/requirements.txt
 
 cd /home/ec2-user/project
 
-python3.11 manage.py collectstatic --clear
-python3.11 manage.py collectstatic --noinput
+python3.11 manage.py collectstatic --clear --noinput
 
 
 # Configure Permissions

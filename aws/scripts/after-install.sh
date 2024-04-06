@@ -32,8 +32,12 @@ cd /home/ec2-user/project
 
 python3.11 manage.py collectstatic
 
-chmod 755 static
-chown ec2-user:ec2-user static
+
+# Configure Permissions
+# --------------------------------------------------------------------------------
+
+chown -R ec2-user:ec2-user /home/ec2-user
+chmod -R 750 /home/ec2-user
 
 
 # Install and Configure Gunicorn

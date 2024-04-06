@@ -35,6 +35,7 @@ python3.11 manage.py collectstatic
 chmod 755 static
 chown ec2-user:ec2-user static
 
+
 # Install and Configure Gunicorn
 # --------------------------------------------------------------------------------
 

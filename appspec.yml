@@ -4,7 +4,7 @@ files:
   - source: /project
     destination: /home/ec2-user/project
 permissions:
-  - object: /home/ec2-user/project
+  - object: /home/ec2-user
     owner: ec2-user
     group: ec2-user
     mode: 755

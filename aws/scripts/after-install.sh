@@ -15,7 +15,7 @@ ALLOWED_HOSTS=${SERVER_IP}
 EOF
 
 
-# Install requirements
+# Install Requirements
 # --------------------------------------------------------------------------------
 
 python3.11 -m venv /home/ec2-user/project/.venv
@@ -24,9 +24,16 @@ source /home/ec2-user/project/.venv/bin/activate
 
 python3.11 -m pip install -r /home/ec2-user/project/requirements.txt
 
+
+# Configure static files
+# --------------------------------------------------------------------------------
+
 cd /home/ec2-user/project
 
 python3.11 manage.py collectstatic
+
+chmod 755 static
+chown ec2-user:ec2-user static
 
 # Install and Configure Gunicorn
 # --------------------------------------------------------------------------------

@@ -74,7 +74,8 @@ Resources:
             mkdir /etc/nginx/ssl
             chmod 700 /etc/nginx/ssl
 
-            openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.example.com" -keyout /etc/nginx/ssl/domain.key -out /etc/nginx/ssl/domain.crt
+            SERVER_IP=$(curl https://checkip.amazonaws.com)
+            openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=$SERVER_IP" -keyout /etc/nginx/ssl/domain.key -out /etc/nginx/ssl/domain.crt
 
             /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
       Tags:

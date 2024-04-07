@@ -70,11 +70,11 @@ Resources:
             groupadd www
             usermod -a -G www ec2-user
             usermod -a -G ec2-user nginx
-            
+
             mkdir /etc/nginx/ssl
             chmod 700 /etc/nginx/ssl
 
-            openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.example.com" -keyout /etc/nginx/ssl/domain.key -out /etc/nginx/ssl/domain.cert
+            openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.example.com" -keyout /etc/nginx/ssl/domain.key -out /etc/nginx/ssl/domain.crt
 
             /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
       Tags:
@@ -86,6 +86,10 @@ Resources:
     Properties:
       GroupDescription: Enable HTTP access via port 80 and SSH
       SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80

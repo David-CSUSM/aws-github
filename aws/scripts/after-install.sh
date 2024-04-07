@@ -90,8 +90,10 @@ server {
     listen 443 ssl;
     server_name ${SERVER_IP};
 
-    ssl_certificate "/etc/nginx/ssl/domain.crt";
-    ssl_certificate_key "/etc/nginx/ssl/domain.key";
+    ssl_certificate /etc/nginx/ssl/domain.crt;
+    ssl_certificate_key /etc/nginx/ssl/domain.key;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
 
     location = /favicon.ico { access_log off; log_not_found off; }
 

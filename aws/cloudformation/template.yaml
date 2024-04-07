@@ -42,6 +42,10 @@ Resources:
               command: "python3.11 -m ensurepip --upgrade"
             02-upgrade-pip:
               command: "python3.11 -m pip install --upgrade pip"
+            03-create-venv:
+              command: "python3.11 -m venv /home/ec2-user/venv"
+            04-install-gunicorn:
+              command: "source /home/ec2-user/venv/bin/activate && python3.11 -m pip install gunicorn"
         config:
           commands:
             01-create-www:

@@ -18,9 +18,7 @@ EOF
 # Install Requirements
 # --------------------------------------------------------------------------------
 
-python3.11 -m venv /home/ec2-user/project/.venv
-
-source /home/ec2-user/project/.venv/bin/activate
+source /home/ec2-user/venv/bin/activate
 
 python3.11 -m pip install -r /home/ec2-user/project/requirements.txt
 
@@ -40,10 +38,8 @@ chown -R ec2-user:ec2-user /home/ec2-user
 chmod -R 750 /home/ec2-user
 
 
-# Install and Configure Gunicorn
+# Configure Gunicorn
 # --------------------------------------------------------------------------------
-
-python3.11 -m pip install gunicorn
 
 cat > /etc/systemd/system/gunicorn.socket <<EOF
 [Unit]
@@ -67,7 +63,7 @@ After=network.target
 User=ec2-user
 Group=www
 WorkingDirectory=/home/ec2-user/project
-ExecStart=/home/ec2-user/project/.venv/bin/gunicorn \
+ExecStart=/home/ec2-user/venv/bin/gunicorn \
           --access-logfile - \
           --workers 3 \
           --bind unix:/run/gunicorn.sock \
